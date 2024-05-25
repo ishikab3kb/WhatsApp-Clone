@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Sidebar from "./Components/Sidebar";
+import Chat from "./Components/Chat";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import { useState } from "react";
+import Login from "./Components/Login";
+import { useStateValue } from "./StateProvider";
 
 function App() {
+  const [{ user } ,dispatch] = useStateValue();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    //BEM naming convention
+    <div className="app">
+      {/* <h1>Lets build whatsapp</h1> */}
+
+      {!user ? (
+        <Login></Login>
+      ) : (
+        <div className="app__body">
+          <Router>
+            <Sidebar></Sidebar>
+            <Routes>
+              <Route path="/rooms/:roomId" element={<Chat></Chat>}></Route>
+              <Route path="/" element={<></>}></Route>
+            </Routes>
+          </Router>
+        </div>
+      )}
     </div>
   );
 }
